@@ -1,3 +1,4 @@
+import { createStore } from 'redux';
 
 const counter = (state = 0, action) => {
   switch(action.type) {
@@ -10,26 +11,13 @@ const counter = (state = 0, action) => {
   }
 }
 
-let state;
+const store = createStore(counter);
 
-state = counter(state, {});
-console.log(state); // 0
+store.dispatch({ type: 'INCREMENT' });
+store.dispatch({ type: 'INCREMENT' });
+store.dispatch({ type: 'INCREMENT' });
+console.log(store.getState());
 
-state = counter(state, { type: 'INCREMENT' });
-console.log(state); // 1
-
-state = counter(state, { type: 'INCREMENT' });
-console.log(state); // 2
-
-state = counter(state, { type: 'DECREMENT' });
-console.log(state); // 1
-
-state = counter(state, { type: 'DECREMENT' });
-console.log(state); // 0
-
-state = counter(state, { type: 'INCREMENT' });
-console.log(state); // 1
-
-
-
-
+store.dispatch({ type: 'INCREMENT' });
+store.dispatch({ type: 'INCREMENT' });
+console.log(store.getState());
