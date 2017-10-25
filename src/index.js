@@ -1,7 +1,5 @@
 
 const counter = (state = 0, action) => {
-  console.log(state);
-
   switch(action.type) {
     case 'INCREMENT':
       return state + 1;
@@ -12,49 +10,26 @@ const counter = (state = 0, action) => {
   }
 }
 
-const createStore = (reducer) => {
-  let state;
-  let listeners = [];
+let state;
 
-  const getState = () => state;
+state = counter(state, {});
+console.log(state); // 0
 
-  const dispatch = (action) => {
-    state = reducer(state, action);
-    listeners.forEach(listener => listener());
-  }
+state = counter(state, { type: 'INCREMENT' });
+console.log(state); // 1
 
-  const subscribe = (listener) => {
-    listeners.push(listener);
+state = counter(state, { type: 'INCREMENT' });
+console.log(state); // 2
 
-    return () => {
-      listeners = listeners.filter(l => l !== listener);
-    }
-  }
+state = counter(state, { type: 'DECREMENT' });
+console.log(state); // 1
 
-  // To just initializing the sate
-  dispatch({})
+state = counter(state, { type: 'DECREMENT' });
+console.log(state); // 0
 
-  return {
-    getState,
-    dispatch,
-    subscribe
-  }
-}
+state = counter(state, { type: 'INCREMENT' });
+console.log(state); // 1
 
-const store = createStore(counter);
-let unSubscribeRender;
 
-const render = () => {
-  document.getElementById('root').innerText = store.getState();
-  if (store.getState() > 10) {
-    unSubscribeRender();
-  }
-}
 
-render();
 
-unSubscribeRender = store.subscribe(render);
-
-document.addEventListener('click', () => {
-  store.dispatch({ type: 'INCREMENT' });
-})
