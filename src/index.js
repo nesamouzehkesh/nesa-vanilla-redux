@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 
-const counter = (state = 0, action) => {
+const counterReducer = (state = 0, action) => {
   switch(action.type) {
     case 'INCREMENT':
       return state + 1;
@@ -11,13 +11,18 @@ const counter = (state = 0, action) => {
   }
 }
 
-const store = createStore(counter);
+const store = createStore(counterReducer);
 
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
-console.log(store.getState());
+// This is rendering the state in dom
+const render = () => {
+  document.getElementById('root').innerText = store.getState();
+}
+render();
 
-store.dispatch({ type: 'INCREMENT' });
-store.dispatch({ type: 'INCREMENT' });
-console.log(store.getState());
+// We subscribe this `render` function, so each time state is changing this function will be called
+store.subscribe(render);
+
+// This dispatch and action
+document.addEventListener('click', () => {
+  store.dispatch({ type: 'INCREMENT' });
+})
